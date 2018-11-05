@@ -143,7 +143,8 @@ class OicSession < ActiveRecord::Base
 
   def user
     if @user.blank? || id_token_changed?
-      @user = JSON::parse(Base64::decode64(id_token.split('.')[1]))
+      decoded_id_token = JWT.decode id_token, nil, false
+      @user=decoded_id_token[0]
     end
     return @user
   end
